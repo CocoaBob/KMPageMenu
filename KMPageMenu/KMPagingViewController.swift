@@ -31,7 +31,7 @@ public class KMPagingViewController: UIViewController {
     /// 是否开启滚动
     public var isScrollEnable: Bool = true {
         didSet {
-            if let page = pageVc { page.setScrollEnable(isScrollEnable) }
+            pageVC.setScrollEnable(isScrollEnable)
         }
     }
     
@@ -48,7 +48,7 @@ public class KMPagingViewController: UIViewController {
         }
     }
     
-    fileprivate var pageVc: UIPageViewController!
+    fileprivate var pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [.spineLocation : UIPageViewController.SpineLocation.none])
     
     // MARK:- init
     public init(viewControllers: [UIViewController]) {
@@ -81,20 +81,22 @@ fileprivate extension KMPagingViewController {
                 let firstVC = viewControllers.first
         else    { return }
         
-        let options: [String : Any] = [UIPageViewControllerOptionSpineLocationKey : NSNumber(integerLiteral: UIPageViewControllerSpineLocation.none.rawValue)]
-        let page = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: options)
-        page.delegate = self
-        page.dataSource = self
-        page.setViewControllers([firstVC],
+        pageVC.delegate = self
+        pageVC.dataSource = self
+        pageVC.setViewControllers([firstVC],
                                 direction: .forward,
                                 animated: false,
                                 completion: nil)
-        page.view.frame = self.view.bounds
-        pageVc = page
 
-        self.view.addSubview(page.view)
-        self.addChildViewController(pageVc)
-        pageVc.didMove(toParentViewController: self)
+        self.view.addSubview(pageVC.view)
+        pageVC.view.translatesAutoresizingMaskIntoConstraints = false
+        pageVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        pageVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        pageVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        pageVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+
+        self.addChild(pageVC)
+        pageVC.didMove(toParent: self)
     }
 }
 
@@ -105,16 +107,16 @@ public extension KMPagingViewController {
         
         guard currentIndex != index else { return }
         
-        let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection = index > currentIndex ? .forward : .reverse
         // 避免在切换动画进行中又进行反复切换
-        pageVc.view.isUserInteractionEnabled = false
-        pageVc.setViewControllers([viewControllers[index]],
+        pageVC.view.isUserInteractionEnabled = false
+        pageVC.setViewControllers([viewControllers[index]],
                                   direction: direction,
                                   animated: animated,
                                   completion: { [weak self] (_) in
             self?.currentIndex = index
             // 切换完成重新开启交互
-            self?.pageVc.view.isUserInteractionEnabled = true
+            self?.pageVC.view.isUserInteractionEnabled = true
         })
     }
     /// 获取当前子控制器的角标

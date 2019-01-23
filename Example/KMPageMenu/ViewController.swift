@@ -86,8 +86,8 @@ class ViewController: UIViewController {
                               y: menu.frame.maxY,
                               width: width,
                               height: view.frame.height - menu.frame.maxY)
-        self.addChildViewController(p)
-        p.didMove(toParentViewController: self)
+        self.addChild(p)
+        p.didMove(toParent: self)
         self.view.addSubview(p.view)
         
         return p

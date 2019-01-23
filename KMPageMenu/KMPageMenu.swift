@@ -10,7 +10,6 @@ import UIKit
 
 public struct KMPageMenuStyle {
     
-    
     /// 计算 遮罩 与 文字
     public var indicatorPendingHorizontal: CGFloat  = 16
     
@@ -47,13 +46,12 @@ public struct KMPageMenuStyle {
     public var selectedTitleColor = UIColor.darkGray
     
     public init() {}
-    
 }
 
 
 @IBDesignable public class KMPageMenu: UIControl {
     
-    public typealias PageMeunIndexChangeCallBack = ((Int) -> Void)
+    public typealias PageMenuIndexChangeCallBack = ((Int) -> Void)
     
     public var style: KMPageMenuStyle {
         didSet {
@@ -67,7 +65,7 @@ public struct KMPageMenuStyle {
             setSelectIndex(index: 0, animated: true)
         }
     }
-    public var valueChange: PageMeunIndexChangeCallBack?
+    public var valueChange: PageMenuIndexChangeCallBack?
     
     public var isScrollEnable: Bool {
         set {
@@ -360,7 +358,7 @@ public struct KMPageMenuStyle {
             
             self.selectIndex = index
             self.valueChange?(index)
-            self.sendActions(for: UIControlEvents.valueChanged)
+            self.sendActions(for: UIControl.Event.valueChanged)
         }
     }
 }
@@ -470,7 +468,7 @@ extension KMPageMenu {
 fileprivate extension String {
     func size(with font: UIFont) -> CGSize {
         let aSize = CGSize(width: CGFloat(MAXFLOAT), height: 0.0)
-        let rect = (self as NSString).boundingRect(with: aSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        let rect = (self as NSString).boundingRect(with: aSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         return rect.size
     }
 }

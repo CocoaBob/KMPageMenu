@@ -1,10 +1,10 @@
 # KMPageMenu
 
-<img src="https://img.shields.io/badge/Swift-4.0-orange.svg" />  <a href="https://cocoapods.org/pods/KMPageMenu">
+<img src="https://img.shields.io/badge/Swift-4.2-orange.svg" /> <a href="https://cocoapods.org/pods/KMPageMenu">
 <img src="https://img.shields.io/cocoapods/v/KMPageMenu.svg" alt="CocoaPods" />
 </a>
 
-<img src="https://github.com/hkm5558/KMPageMenu/blob/master/Screenshot/截图1.jpg" width="256">  <img src="https://github.com/hkm5558/KMPageMenu/blob/master/Screenshot/截图2.jpg" width="256">
+<img src="https://github.com/CocoaBob/KMPageMenu/blob/master/Screenshot/screenshot1.jpg" width="256">  <img src="https://github.com/CocoaBob/KMPageMenu/blob/master/Screenshot/screenshot2.jpg" width="256">
     
 ## Installation with CocoaPods
 
@@ -38,7 +38,7 @@ This library requires `iOS 8.0+`
 
 ## Usage
 ```swift
-    //首先把 菜单 和 分页视图控制器 添加到视图上
+    // First, add PageMenu and PagingViewControlelr to the view hierarchy
     let menu = KMPageMenu(frame: CGRect(x: 0, y: 40, width: width, height: 44), titles: titles)
     m.style.titleFont = UIFont.systemFont(ofSize: 14)
     view.addSubview(menu)
@@ -50,20 +50,20 @@ This library requires `iOS 8.0+`
     page.didMove(toParentViewController: self)
     self.view.addSubview(page.view)
 
-    // 菜单下标改变的回调
+    // Setup the callback of PageMenu's indicator
     menu.valueChange = { [weak self] index in
         self?.page.pagingToViewController(at: index)
     }
     
-    // KMPageMenu 控件继承于 UIControl 所以也可以用监听 valueChanged 的方式
+    // We can also observe valueChanged event as KMPageMenu is inherited from UIControl
     menu.addTarget(self, action: #selector(menuValueChange(sender:)), for: .valueChanged)
     
-    // 分页控制器切换完成的回调
+    // Setup the callback of changing pages for PagingViewController
     page.didFinishPagingCallBack = { [weak self] (currentViewController, currentIndex)in
         self?.menu.setSelectIndex(index: currentIndex, animated: true)
     }
     
-    // KMPagingViewController 同时也提供了代理的回调
+    // KMPagingViewController also provides delegate
     // KMPagingViewControllerDelegate
     
     page.delegate = self
@@ -71,12 +71,11 @@ This library requires `iOS 8.0+`
     func pagingController(_ pagingController: KMPagingViewController, didFinish currentViewController: UIViewController, currentIndex: Int) {
     
         print("selectIndex == \(currentIndex)")
-        
     }
 ```
 ## Gif
 
-<img src="https://github.com/hkm5558/KMPageMenu/blob/master/Screenshot/示例.gif" width="256">
+<img src="https://github.com/CocoaBob/KMPageMenu/blob/master/Screenshot/example.gif" width="256">
     
 ## Author
 
